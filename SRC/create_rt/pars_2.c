@@ -55,6 +55,9 @@ void	parsing_color(t_rtv1 *rtv1)
 	int		num_obj;
 
 	num_obj = -1;
+	BACKGROUND.red *= 0.00255;
+	BACKGROUND.green *= 0.00255;
+	BACKGROUND.blue *= 0.00255;
 	while (++num_obj < SIZE_OBJ)
 	{
 		RT_OBJ.color.red *= 0.00255;

@@ -81,6 +81,10 @@ void	outline(t_rtv1 *rtv1)
 	i = -1;
 	while (++i < OPTION->size_screen)
 	{
+		if (RT->screen[i].ray->y + 1 == OPTION->size_y)
+			continue ;
+		if (RT->screen[i].ray->x + 1 == OPTION->size_x)
+			continue ;
 		if (RT->screen[i].w == 0)
 		{
 			RT->screen[i].color->red = OPTION->outline_color.red;

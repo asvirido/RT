@@ -97,4 +97,6 @@ void	valid_option(t_rtv1 *rtv1)
 		error_exit("ERROR$9 draft_x{1-5}");
 	if (OPTION->draft_y < 1 || OPTION->draft_y > 5)
 		error_exit("ERROR$10 draft_y{1-5}");
+	if (OPTION->depth_rec < 3 || OPTION->depth_rec > 15)
+		error_exit("ERROR$10 depth_rec{3-15");
 }

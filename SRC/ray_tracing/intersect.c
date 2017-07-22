@@ -117,6 +117,7 @@ t_color				intersect(t_rtv1 *rtv1, int i)
 {
 	t_color color;
 
+	RT->screen[i].id = -100;
 	if (OPTION->recursion == FALSE)
 		color = fast_intersect(RT, i);
 	else

@@ -78,4 +78,5 @@ void	init_demo(t_rtv1 *rtv1)
 	parcing_light_position(RT);
 	parcing_rotation(RT);
 	parcing_shines(RT);
+	parcing_reftact(RT);
 }

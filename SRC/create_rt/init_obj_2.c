@@ -26,6 +26,18 @@ void	parcing_shines(t_rtv1 *rtv1)
 	}
 }
 
+void	parcing_reftact(t_rtv1 *rtv1)
+{
+	int		num_obj;
+
+	num_obj = -1;
+	while (++num_obj < SIZE_OBJ)
+	{
+		if (RT_OBJ.refraction == 1 && RT_OBJ.reflection == 1)
+			RT_OBJ.reflection = 0;
+	}
+}
+
 void	parcing_half_sphere(t_rtv1 *rtv1)
 {
 	int			num_obj;
