@@ -12,44 +12,6 @@
 
 #include "../../head.h"
 
-void	ft_check_objtype(char *str, t_all_data *data, int i)
-{
-	if (!str)
-		ft_pars_err("Object type error");
-	else if (strcmp(str, "Sphere") == 0)
-		data->all_obj[i].id = SPHERE;
-	else if (strcmp(str, "Plane") == 0)
-		data->all_obj[i].id = PLANE;
-	else if (strcmp(str, "Cone") == 0)
-		data->all_obj[i].id = CONE;
-	else if (strcmp(str, "Cylinder") == 0)
-		data->all_obj[i].id = CYLINDER;
-	else if (strcmp(str, "Disc") == 0)
-		data->all_obj[i].id = DISC;
-	else if (strcmp(str, "Half_sphere") == 0)
-		data->all_obj[i].id = HALF_SPHERE;
-	else if (strcmp(str, "Ellipsoid") == 0)
-		data->all_obj[i].id = ELLIPSOID;
-	else if (strcmp(str, "Cd_disc") == 0)
-		data->all_obj[i].id = CD_DISC;
-	else
-		ft_pars_err("Object type error");
-}
-
-void	ft_parse_opt(t_json_obj *j, t_all_data *data, int i)
-{
-	j->j_object = cJSON_GetArrayItem(j->j_format, i);
-	j->j_type = cJSON_GetObjectItemCaseSensitive(j->j_object, "type");
-	if (!cJSON_IsString(j->j_type))
-		ft_pars_err("Obect type error");
-	ft_check_objtype(j->j_type->valuestring, data, i);
-	data->all_obj[i].type = j->j_type->valuestring;
-	j->j_size = cJSON_GetObjectItemCaseSensitive(j->j_object, "size");
-	if (!cJSON_IsNumber(j->j_size))
-		ft_pars_err("Size parameters error");
-	data->all_obj[i].size = j->j_size->valuedouble;
-}
-
 void	ft_pars_pos_rot(t_json_obj *j, t_all_data *data, int i)
 {
 	j->j_position = cJSON_GetObjectItemCaseSensitive(j->j_object, "position");
@@ -94,24 +56,27 @@ void	ft_pars_color(t_json_obj *j, t_all_data *data, int i)
 		ft_pars_err("Color parameters error, use from 0 to 255");
 }
 
-void    ft_pars_smthg(t_json_obj *j, t_all_data *data, int i)
+void	ft_pars_smthg(t_json_obj *j, t_all_data *data, int i)
 {
-    j->j_reflection = cJSON_GetObjectItemCaseSensitive(j->j_object, "reflection");
-    if (!cJSON_IsBool(j->j_reflection))
-        ft_pars_err("reflection parameters error");
-    data->all_obj[i].reflection = j->j_reflection->valueint;
-    j->j_refraction = cJSON_GetObjectItemCaseSensitive(j->j_object, "refraction");
-    if (!cJSON_IsBool(j->j_refraction))
-        ft_pars_err("refraction parameters error");
-    data->all_obj[i].refraction = j->j_refraction->valueint;
-    j->j_param_refract = cJSON_GetObjectItemCaseSensitive(j->j_object, "param_refract");
-    if (!cJSON_IsNumber(j->j_param_refract))
-        ft_pars_err("Param_refract parameters error");
-    data->all_obj[i].param_refract = j->j_param_refract->valuedouble;
-    j->j_shines = cJSON_GetObjectItemCaseSensitive(j->j_object, "shines");
-    if (!cJSON_IsNumber(j->j_shines))
-        ft_pars_err("shines parameters error");
-    data->all_obj[i].shines = j->j_shines->valuedouble;
+	j->j_reflection = cJSON_GetObjectItemCaseSensitive(j->j_object,
+		"reflection");
+	if (!cJSON_IsBool(j->j_reflection))
+		ft_pars_err("reflection parameters error");
+	data->all_obj[i].reflection = j->j_reflection->valueint;
+	j->j_refraction = cJSON_GetObjectItemCaseSensitive(j->j_object,
+		"refraction");
+	if (!cJSON_IsBool(j->j_refraction))
+		ft_pars_err("refraction parameters error");
+	data->all_obj[i].refraction = j->j_refraction->valueint;
+	j->j_param_refract = cJSON_GetObjectItemCaseSensitive(j->j_object,
+		"param_refract");
+	if (!cJSON_IsNumber(j->j_param_refract))
+		ft_pars_err("Param_refract parameters error");
+	data->all_obj[i].param_refract = j->j_param_refract->valuedouble;
+	j->j_shines = cJSON_GetObjectItemCaseSensitive(j->j_object, "shines");
+	if (!cJSON_IsNumber(j->j_shines))
+		ft_pars_err("shines parameters error");
+	data->all_obj[i].shines = j->j_shines->valuedouble;
 }
 
 void	ft_parse_all_obj(t_json_obj *j, t_object *o, t_all_data *data)
@@ -155,6 +120,7 @@ void	ft_json_parser_obj(char *file, t_all_data *data)
 	o->obj_count = cJSON_GetArraySize(j->j_format);
 	ft_parse_all_obj(j, o, data);
 	data->all_obj->obj_count = o->obj_count;
+	cJSON_Delete(j->j_root);
 	free(j);
 	free(o);
 }

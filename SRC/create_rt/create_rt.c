@@ -22,7 +22,8 @@ void		calc(t_rtv1 *rtv1)
 	while (++i < OPTION->size_screen)
 	{
 		j = -1;
-		RT->screen[i].dir_ssaa = (t_vector*)malloc(sizeof(t_vector) * (OPTION->size_ssaa + 1));
+		RT->screen[i].dir_ssaa = (t_vector*)malloc(sizeof(t_vector) *
+			(OPTION->size_ssaa + 1));
 		while (++j < OPTION->size_ssaa)
 		{
 			tmp = calc_ssaa(RT, RT->screen[i].ray, j);
@@ -31,13 +32,7 @@ void		calc(t_rtv1 *rtv1)
 	}
 }
 
-void ft_pars_err(char *str)
-{
-	printf("\033[1;31m_______%s_______\n\033[0m", str);
-	exit(1);
-}
-
-char	*ft_read_file(t_env *e)
+char		*ft_read_file(t_env *e)
 {
 	char	*line;
 	char	*str;
@@ -66,13 +61,13 @@ char	*ft_read_file(t_env *e)
 	return (str);
 }
 
-void	ft_init(t_env *e, char *file)
+void		ft_init(t_env *e, char *file)
 {
 	if ((e->fd = open(file, O_RDONLY)) < 0)
 		error_exit("scene error");
 }
 
-t_all_data		*ft_parsing(t_env *e)
+t_all_data	*ft_parsing(t_env *e)
 {
 	t_all_data	*data;
 	char		*file;
@@ -86,9 +81,10 @@ t_all_data		*ft_parsing(t_env *e)
 	return (data);
 }
 
-t_rtv1			*create_rtv1(t_env *e, char *file)
+t_rtv1		*create_rtv1(t_env *e, char *file)
 {
 	t_rtv1		*rtv1;
+	t_vector	tmp;
 
 	ft_init(e, file);
 	rtv1 = (t_rtv1*)malloc(sizeof(t_rtv1) + 1);
@@ -99,12 +95,11 @@ t_rtv1			*create_rtv1(t_env *e, char *file)
 	rtv1->ray = create_ray();
 	rtv1->light_ray = create_ray();
 	rtv1->pos = create_vector();
-	rtv1->obj = object_mlx(OPTION->size_x, OPTION->size_y, OPTION->name_win);
+	rtv1->obj = object_mlx(OPTION->size_x, OPTION->size_y, "RT");
 	rtv1->screen = create_map(OPTION->size_x, OPTION->size_y);
 	rtv1->screen2 = create_map(OPTION->size_x, OPTION->size_y);
-	construct_vector(rtv1->ray->origin, (OPTION->size_x / 2) + 0.99, (OPTION->size_y / 2) + 0.99, -1700.99);
-	t_vector tmp = sub_vector(RAY_ORIGIN, &OPTION->cam_pos);
-	set_vector(RAY_ORIGIN, &tmp);
+	construct_vector(rtv1->ray->origin, (OPTION->size_x / 2) + 0.99,
+		(OPTION->size_y / 2) + 0.99, -1700.99);
 	valid_option(RT);
 	calc(RT);
 	init_demo(RT);

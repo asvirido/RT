@@ -12,33 +12,33 @@
 
 #include "../../../head.h"
 
+t_vector		g_tmp;
+t_val_math		g_val;
+t_vector		g_p;
+
 int		intersect_cd_disc(t_ray *ray, t_object object, double *t)
 {
-	t_vector		tmp;
-	t_val_math	val;
-	t_vector		p;
-
-	val.d = dot_vector(&object.direction, ray->direction);
-	if (val.d != 0)
+	g_val.d = dot_vector(&object.direction, ray->direction);
+	if (g_val.d != 0)
 	{
-		tmp = sub_vector(&object.position, ray->origin);
-		val.t0 = dot_vector(&tmp, &object.direction) / val.d;
-		if (val.t0 > 0.001)
+		g_tmp = sub_vector(&object.position, ray->origin);
+		g_val.t0 = dot_vector(&g_tmp, &object.direction) / g_val.d;
+		if (g_val.t0 > 0.001)
 		{
-		   tmp = scalar_vector(val.t0, ray->direction);
-		   p = add_vector(ray->origin, &tmp);
-		   tmp = sub_vector(&p, &object.position);
-		   val.d = dot_vector(&tmp, &tmp);
-		   if (sqrtf(val.d) <= object.size)
-		   {
-				if (sqrtf(val.d) <= object.size / 3)
+			g_tmp = scalar_vector(g_val.t0, ray->direction);
+			g_p = add_vector(ray->origin, &g_tmp);
+			g_tmp = sub_vector(&g_p, &object.position);
+			g_val.d = dot_vector(&g_tmp, &g_tmp);
+			if (sqrtf(g_val.d) <= object.size)
+			{
+				if (sqrtf(g_val.d) <= object.size / 3)
 					return (0);
 				else
 				{
-					*t = val.t0;
+					*t = g_val.t0;
 					return (1);
 				}
-		   }
+			}
 		}
 	}
 	return (0);

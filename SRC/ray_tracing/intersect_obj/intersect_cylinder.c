@@ -18,7 +18,7 @@ void	find_a_b_c(t_ray *ray, t_object *cylinder, t_val_math *val)
 	t_vector		tmp;
 	t_vector		sub_1;
 	t_vector		sub_2;
-	double		res;
+	double			res;
 
 	delta_p = sub_vector(ray->origin, &cylinder->position);
 	res = dot_vector(ray->direction, &cylinder->direction);

@@ -12,101 +12,7 @@
 
 #include "../../head.h"
 
-void 	parsing_color(t_rtv1 *rtv1)
-{
-	int 	num_obj;
-
-	num_obj = -1;
-	while (++num_obj < SIZE_OBJ)
-	{
-		RT_OBJ.color.red *= 0.00255;
-		RT_OBJ.color.blue *= 0.00255;
-		RT_OBJ.color.green *= 0.00255;
-	}
-}
-
-void 	parsing_direction(t_rtv1 *rtv1)
-{
-	int			num_obj;
-	t_vector	tmp;
-
-	num_obj = -1;
-	while (++num_obj < SIZE_OBJ)
-	{
-		tmp = normal_vector(RT_OBJ.direction);
-		set_vector(&RT_OBJ.direction, &tmp);
-	}
-}
-
-void 	parcing_size_pow(t_rtv1 *rtv1)
-{
-	int		num_obj;
-
-	num_obj = -1;
-	while (++num_obj < SIZE_OBJ)
-	{
-		if (RT_OBJ.size < 0)
-			error_exit("Bad size object: too small size object[0-1999999]");
-		if (RT_OBJ.size >= 2000000)
-			error_exit("Bad size object: too big size object[1-1999999]");
-		RT_OBJ.size_pow = RT_OBJ.size * RT_OBJ.size;
-	}
-}
-
-void 	parcing_shines(t_rtv1 *rtv1)
-{
-	int		num_obj;
-
-	num_obj = -1;
-	while (++num_obj < SIZE_OBJ)
-	{
-		if (RT_OBJ.shines <= 0)
-			error_exit("Bad shines: too small shines [1-600]");
-		if (RT_OBJ.shines > 600)
-			error_exit("Bad shines: too big shines [1-600]");
-	}
-}
-
-void 	parcing_half_sphere(t_rtv1 *rtv1)
-{
-	int		num_obj;
-	t_vector	tmp;
-	double	len;
-
-	num_obj = -1;
-	while (++num_obj < SIZE_OBJ)
-	{
-		if (RT_OBJ.id == HALF_SPHERE)
-		{
-			tmp = sub_vector(&RT_OBJ.position, &RT_OBJ.position);
-			len = module_vector(&tmp) * module_vector(&tmp);
-			RT_OBJ.radius_disc = sqrt(RT_OBJ.size_pow - len);
-		}
-	}
-}
-
-void 	parcing_cone(t_rtv1 *rtv1)
-{
-	int		num_obj;
-	double	angle;
-
-	num_obj = -1;
-	while (++num_obj < SIZE_OBJ)
-	{
-		if (RT_OBJ.id == CONE)
-		{
-			if (RT_OBJ.size >= 360 || RT_OBJ.size <= 0)
-				error_exit("ERROR angle cone size");
-			angle = RT_OBJ.size * RAD;
-			RT_OBJ.cone_cos_two = cos(angle) * cos(angle);
-			RT_OBJ.cone_sin_two = sin(angle) * sin(angle);
-			RT_OBJ.two_cone_cos_two = 2 * (cos(angle) * cos(angle));
-			RT_OBJ.two_cone_sin_two = 2 * (sin(angle) * sin(angle));
-		}
-	}
-}
-
-void parcing_light_ambient(t_rtv1 *rtv1)
+void	parcing_light_ambient(t_rtv1 *rtv1)
 {
 	int		i;
 
@@ -120,7 +26,7 @@ void parcing_light_ambient(t_rtv1 *rtv1)
 	}
 }
 
-void parcing_light_position(t_rtv1 *rtv1)
+void	parcing_light_position(t_rtv1 *rtv1)
 {
 	int		i;
 
@@ -133,16 +39,16 @@ void parcing_light_position(t_rtv1 *rtv1)
 	}
 }
 
-void parcing_rotation(t_rtv1 *rtv1)
+void	parcing_rotation(t_rtv1 *rtv1)
 {
 	int	num_obj;
 
 	num_obj = -1;
-	while(++num_obj < SIZE_OBJ)
+	while (++num_obj < SIZE_OBJ)
 		rotation_vector(&RT_OBJ.direction, &RT_OBJ.rotation);
 }
 
-void 	parcing_direction_two(t_rtv1 *rtv1)
+void	parcing_direction_two(t_rtv1 *rtv1)
 {
 	int	num_obj;
 
@@ -154,13 +60,13 @@ void 	parcing_direction_two(t_rtv1 *rtv1)
 		if (RT_OBJ.direction.x == 0)
 			if (RT_OBJ.direction.y == 0 && RT_OBJ.direction.z == 0)
 			{
-					printf("Bad direction: num object %d\n",num_obj + 1);
-					exit(1);
+				printf("Bad direction: num object %d\n", num_obj + 1);
+				exit(1);
 			}
 	}
 }
 
-void		init_demo(t_rtv1 *rtv1)
+void	init_demo(t_rtv1 *rtv1)
 {
 	parsing_color(RT);
 	parcing_size_pow(RT);

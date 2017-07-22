@@ -37,7 +37,7 @@
 # define WIN_MY					rtv1->obj->win
 # define L						rtv1->data->light_pos[i]
 # define SCREEN					rtv1->screen[i].ray
- # define BACKGROUND			rtv1->data->all_opt->bg_color
+# define BACKGROUND				rtv1->data->all_opt->bg_color
 # define OPTION					rtv1->data->all_opt
 # define DIR_NORMAL 			RT->screen[i].dir_ssaa[j]
 # define X 						RT->screen2[i].ray->x
@@ -55,7 +55,6 @@
 # define ELLIPSOID			7
 # define CD_DISC				8
 # define MINIMUM				1.5
-// # define SIZE					SIZE_X * SIZE_Y
 
 typedef struct	s_val_math
 {
@@ -70,9 +69,9 @@ typedef struct	s_val_math
 
 typedef struct	s_val_intersect
 {
-	int		i;
-	int		num_obj;
-	int		hit;
+	int			i;
+	int			num_obj;
+	int			hit;
 }				t_val_intersect;
 
 typedef struct	s_val_vector
@@ -80,39 +79,42 @@ typedef struct	s_val_vector
 	t_vector		point;
 	t_vector		n_point;
 	t_vector		tmp;
-	t_color		color;
-	t_color		*rgb;
+	t_color			color;
+	t_color			*rgb;
 	t_vector		ray;
 }				t_val_vector;
 
 typedef struct	s_rtv1
 {
-	t_mlx			   *obj;
+	t_mlx			*obj;
 	t_all_data		*data;
-	t_img			   *img;
-	t_ray			   *ray;
-	t_ray			   *light_ray;
-	t_screen		 *screen;
-	t_screen		 *screen2;
+	t_img			*img;
+	t_ray			*ray;
+	t_ray			*light_ray;
+	t_screen		*screen;
+	t_screen		*screen2;
 	t_val_vector	*val;
-	int				   *hit;
+	int				*hit;
 	int				procent_one;
 	int				loading_progress;
 	int				count;
-	t_vector		 *pos; // KACTИЛЬ
+	t_vector		*pos;
 }				t_rtv1;
 
 t_rtv1			*create_rtv1(t_env *e, char *s);
-t_vector 		calc_ssaa(t_rtv1 *rtv1, t_vector *dir, int j);
+t_vector		calc_ssaa(t_rtv1 *rtv1, t_vector *dir, int j);
 void			init_demo(t_rtv1 *rtv1);
-
+void			draw_rt(t_rtv1 *rtv1);
+void			effect_filtres(t_rtv1 *rtv1);
+void			ft_ssaa(t_rtv1 *rtv1, int i, t_color *res);
+void			carton(t_rtv1 *rtv1);
+void			outline(t_rtv1 *rtv1);
+void			*thread_draw1(void *parameter);
 void			ray_tracing(t_rtv1 *rtv1);
-void 			fov(t_rtv1 *rtv1, int x, int y);
-void 			motion_blur(t_rtv1 *rtv1);
-
+void			fov(t_rtv1 *rtv1, int x, int y);
+void			motion_blur(t_rtv1 *rtv1);
 t_color			intersect(t_rtv1 *rtv1, int i);
 int				check_intersect_object(t_rtv1 *rt, double *t, int i, t_ray *r);
-
 int				intersect_sphere(t_ray *r, t_object obj, double *t);
 int				intersect_cylinder(t_ray *r, t_object c, double *t);
 int				intersect_cone(t_ray *r, t_object c, double *t);
@@ -121,7 +123,6 @@ int				intersect_ellipsoid(t_ray *ray, t_object ellips, double *t);
 int				intersect_half_sphere(t_ray *r, t_object *obj, double *t);
 int				intersect_plane_limit(t_ray *ray, t_object plane, double *t);
 int				intersect_cd_disc(t_ray *ray, t_object object, double *t);
-
 int				discriminant(double *t, t_val_math val);
 int				light_intersect(t_rtv1 *rt, double *t);
 t_color			ft_light(t_rtv1 *rt, double *t_min, int num_obj);
@@ -132,7 +133,6 @@ t_vector		get_intersect_normal(t_rtv1 *rt, int num_obj, t_vector *point);
 t_vector		find_normal_cylinder(t_object cylinder, t_vector *point);
 t_vector		find_normal_cone(t_object cone, t_vector *point);
 t_color			get_color(t_rtv1 *rtv1, int num_obj);
-
 int				destroy(void);
 int				event_key(int keycode, t_rtv1 *rtv1);
 int				event_mouse(int keycode, int x, int y, t_rtv1 *rtv1);
@@ -147,8 +147,7 @@ void			zoom(int keycode, int x, int y, t_rtv1 *rtv1);
 void			rotation_x(t_rtv1 *rtv1, int keycode);
 void			rotation_y(t_rtv1 *rtv1, int keycode);
 void			rotation_z(t_rtv1 *rtv1, int keycode);
-void 			valid_option(t_rtv1 *rtv1);
-
+void			valid_option(t_rtv1 *rtv1);
 void			mlx_use(t_rtv1 *rtv1);
 int				error_exit(char *error);
 void			ft_bzero(void *s, size_t n);
@@ -160,14 +159,20 @@ size_t			ft_strlen(const char *str);
 void			*ft_memalloc(size_t size);
 char			*ft_strnew(size_t size);
 void			*ft_copy(void *data, size_t size);
-void 			becap(t_rtv1 *rtv1);
-
+void			becap(t_rtv1 *rtv1);
 int				get_next_line(int fd, char **line);
-
-// ROTATION VECTOR
-void rot_z(t_vector *v, int angle);
-void rot_y(t_vector *v, int angle);
-void rot_x(t_vector *v, int angle);
-//
+void			rot_z(t_vector *v, int angle);
+void			rot_y(t_vector *v, int angle);
+void			rot_x(t_vector *v, int angle);
+void			parsing_color(t_rtv1 *rtv1);
+void			parsing_direction(t_rtv1 *rtv1);
+void			parcing_size_pow(t_rtv1 *rtv1);
+void			parcing_shines(t_rtv1 *rtv1);
+void			parcing_half_sphere(t_rtv1 *rtv1);
+void			parcing_cone(t_rtv1 *rtv1);
+t_color			slow_intersect(t_rtv1 *rtv1, int i);
+t_color			fast_intersect(t_rtv1 *rtv1, int i);
+void			anti_vector(t_vector *v);
+void			view_point_or_normal(t_rtv1 *rtv1, t_val_vector *val);
 
 #endif

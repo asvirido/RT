@@ -86,5 +86,6 @@ void	ft_pars_lights(char *file, t_all_data *data)
 		ft_lght_color(lj, data, i);
 		i++;
 	}
+	cJSON_Delete(lj->root);
 	free(lj);
 }

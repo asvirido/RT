@@ -19,7 +19,6 @@ t_vector	get_intersect_normal(t_rtv1 *rtv1, int num_obj, t_vector *point)
 	normal.x = 0;
 	normal.y = 0;
 	normal.z = 0;
-
 	if (RT_OBJ.id == SPHERE)
 		normal = normal_vector(sub_vector(&RT_OBJ.position, point));
 	else if (RT_OBJ.id == PLANE)

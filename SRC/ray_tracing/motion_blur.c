@@ -12,7 +12,7 @@
 
 #include "../../head.h"
 
-void 	motion_blur(t_rtv1 *rtv1)
+void	motion_blur(t_rtv1 *rtv1)
 {
 	int			i;
 	int			k;

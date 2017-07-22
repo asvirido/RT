@@ -12,21 +12,17 @@
 
 #include "../../head.h"
 
-void 	anti_vector(t_vector *v)
-{
-	v->x = -v->x;
-	v->y = -v->y;
-	v->z = -v->z;
-}
+t_vector	g_eye_dir;
 
-static inline void 	color_multi(t_color *color, double a)
+static inline void	color_multi(t_color *color, double a)
 {
 	color->red *= a;
 	color->blue *= a;
 	color->green *= a;
 }
 
-void 	lambert_light(t_rtv1 *rtv1, t_val_vector *val, int *hit, int id)
+void				lambert_light(t_rtv1 *rtv1, t_val_vector *val,
+	int *hit, int id)
 {
 	int			i;
 	double		dot;
@@ -50,62 +46,41 @@ void 	lambert_light(t_rtv1 *rtv1, t_val_vector *val, int *hit, int id)
 	}
 }
 
-void 	cel_shaded(t_rtv1 *rtv1, t_val_vector *val, int *hit, int id)
+void				cel_shaded(t_rtv1 *rtv1, t_val_vector *val,
+	int *hit, int id)
 {
 	int			i;
 	double		dot;
-	double		lambert_component;
-	t_vector	l_dir;
 
 	i = -1;
 	while (++i < SIZE_LIGHT)
 	{
 		if (hit[i] == 0)
 			continue ;
-		l_dir = normal_vector(sub_vector(&val->point, &L.position));
-		dot = cos_vector(&val->n_point, &l_dir);
+		val->tmp = normal_vector(sub_vector(&val->point, &L.position));
+		dot = cos_vector(&val->n_point, &val->tmp);
 		if ((id == PLANE || id == DISC || id == CD_DISC) && dot <= 0)
 		{
 			anti_vector(&val->n_point);
-			dot = cos_vector(&val->n_point, &l_dir);
+			dot = cos_vector(&val->n_point, &val->tmp);
 		}
-		lambert_component = MAX(dot, 0.0);
-		if (lambert_component > 0.95)
+		dot = MAX(dot, 0.0);
+		if (dot > 0.95)
 			continue ;
-		else if (lambert_component > 0.5)
+		else if (dot > 0.5)
 			color_multi(&val->rgb[i], 0.7);
-		else if (lambert_component > 0.2)
+		else if (dot > 0.2)
 			color_multi(&val->rgb[i], 0.2);
 		else
 			color_multi(&val->rgb[i], 0.05);
 	}
 }
 
-
-void	view_point_or_normal(t_rtv1 *rtv1, t_val_vector *val)
+void				blinn_fong_light(t_rtv1 *rtv1, t_val_vector *val,
+	int *hit, t_object obj)
 {
-	t_color		color;
-	t_vector		n_point;
-	int			i;
-
-	i = -1;
-	if (OPTION->view_point == TRUE)
-		n_point = normal_vector(val->point);
-	else
-		set_vector(&n_point, &val->n_point);
-	while (++i < SIZE_LIGHT)
-	{
-		val->rgb[i].red = fabs(n_point.x);
-		val->rgb[i].green = fabs(n_point.y);
-		val->rgb[i].blue = fabs(n_point.z);
-	}
-}
-
-void 	blinn_fong_light(t_rtv1 *rtv1, t_val_vector *val, int *hit, t_object obj)
-{
-	t_vector		l_dir;
-	t_vector 	eye_dir;
-	double 		dot;
+	t_vector	l_dir;
+	double		dot;
 	double		beta;
 	int			i;
 
@@ -116,21 +91,23 @@ void 	blinn_fong_light(t_rtv1 *rtv1, t_val_vector *val, int *hit, t_object obj)
 			continue ;
 		l_dir = normal_vector(sub_vector(&val->point, &L.position));
 		dot = cos_vector(&val->n_point, &l_dir);
-		if ((obj.id == PLANE || obj.id == DISC || obj.id == CD_DISC) && dot <= 0)
+		if ((obj.id == PLANE || obj.id == DISC || obj.id == CD_DISC)
+			&& dot <= 0)
 		{
 			anti_vector(&val->n_point);
 			dot = cos_vector(&val->n_point, &l_dir);
 		}
 		beta = MAX(dot, 0.0);
-		set_vector(&eye_dir, RAY_DIRECTION);
-		anti_vector(&eye_dir);
-		l_dir = normal_vector(sub_vector(&l_dir, &eye_dir));
+		set_vector(&g_eye_dir, RAY_DIRECTION);
+		anti_vector(&g_eye_dir);
+		l_dir = normal_vector(sub_vector(&l_dir, &g_eye_dir));
 		beta += pow(MAX(dot_vector(&val->n_point, &l_dir), 0), obj.shines);
 		color_multi(&val->rgb[i], L.ambient + beta);
 	}
 }
 
-void	all_light(t_rtv1 *rtv1, t_val_vector *val, int *hit, int num_obj)
+void				all_light(t_rtv1 *rtv1, t_val_vector *val,
+	int *hit, int num_obj)
 {
 	if (OPTION->lambert_light == TRUE)
 		lambert_light(RT, val, hit, RT_OBJ.id);

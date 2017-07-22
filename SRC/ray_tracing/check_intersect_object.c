@@ -14,8 +14,8 @@
 
 int		check_intersect_object(t_rtv1 *rtv1, double *t, int i, t_ray *ray)
 {
- 	int			res;
-	t_vector		old_origin;
+	int			res;
+	t_vector	old_origin;
 
 	res = 0;
 	set_vector(&old_origin, RAY_ORIGIN);
@@ -26,16 +26,13 @@ int		check_intersect_object(t_rtv1 *rtv1, double *t, int i, t_ray *ray)
 	else if (RT->data->all_obj[i].id == DISC)
 		res = intersect_disc(ray, RT->data->all_obj[i], t);
 	else if (RT->data->all_obj[i].id == CYLINDER)
-		res = intersect_cylinder(ray,RT->data->all_obj[i], t);
+		res = intersect_cylinder(ray, RT->data->all_obj[i], t);
 	else if (RT->data->all_obj[i].id == CONE)
 		res = intersect_cone(ray, RT->data->all_obj[i], t);
 	else if (RT->data->all_obj[i].id == HALF_SPHERE)
 		res = intersect_half_sphere(ray, &RT->data->all_obj[i], t);
 	else if (RT->data->all_obj[i].id == ELLIPSOID)
 	{
-		// RAY_ORIGIN->x -= rtv1->data->all_obj[i].position.x;
-		// RAY_ORIGIN->y -= rtv1->data->all_obj[i].position.y;
-		// RAY_ORIGIN->z -= rtv1->data->all_obj[i].position.z;
 		res = intersect_ellipsoid(ray, RT->data->all_obj[i], t);
 	}
 	else if (RT->data->all_obj[i].id == CD_DISC)
@@ -43,5 +40,3 @@ int		check_intersect_object(t_rtv1 *rtv1, double *t, int i, t_ray *ray)
 	set_vector(RAY_ORIGIN, &old_origin);
 	return (res);
 }
-// else if (RT->rt_obj[i].id == 't')
-	// res = intersect_poligon(ray, RT->rt_obj[i].poligon, t);

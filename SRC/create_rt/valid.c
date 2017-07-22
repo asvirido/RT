@@ -12,9 +12,9 @@
 
 #include "../../head.h"
 
-void 	valid_filters(t_rtv1 *rtv1)
+void	valid_filters(t_rtv1 *rtv1)
 {
-	int 	size;
+	int		size;
 
 	size = 0;
 	if (OPTION->sepia == TRUE)
@@ -31,7 +31,7 @@ void 	valid_filters(t_rtv1 *rtv1)
 		error_exit("ERROR$7: filters == TRUE and too small filters");
 }
 
-void 	valid_size_ssaa(t_rtv1 *rtv1)
+void	valid_size_ssaa(t_rtv1 *rtv1)
 {
 	if (OPTION->ssaa == TRUE)
 	{
@@ -43,7 +43,7 @@ void 	valid_size_ssaa(t_rtv1 *rtv1)
 	}
 }
 
-void 	valid_light(t_rtv1 *rtv1)
+void	valid_light(t_rtv1 *rtv1)
 {
 	int size;
 
@@ -57,7 +57,7 @@ void 	valid_light(t_rtv1 *rtv1)
 		error_exit("ERROR$5: too many model light:)");
 }
 
-void 	valid_antialiasing(t_rtv1 *rtv1)
+void	valid_antialiasing(t_rtv1 *rtv1)
 {
 	int size;
 
@@ -80,7 +80,7 @@ void 	valid_antialiasing(t_rtv1 *rtv1)
 	valid_size_ssaa(RT);
 }
 
-void 	valid_option(t_rtv1 *rtv1)
+void	valid_option(t_rtv1 *rtv1)
 {
 	valid_filters(RT);
 	OPTION->size_screen = OPTION->size_x * OPTION->size_y;

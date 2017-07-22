@@ -106,67 +106,27 @@ t_color				recur(t_rtv1 *rtv1, t_vector *origin, t_vector *dir,
 		color = get_color(rtv1, g_num_obj);
 	if (GRT_OBJ.id == SPHERE)
 	{
-		if (GRT_OBJ.reflection == 1)
-			reflection(RT);
-		else if (GRT_OBJ.refraction == 1)
-			refraction(RT);
+		(GRT_OBJ.reflection == 1) ? reflection(RT) : 0;
+		(GRT_OBJ.refraction == 1) ? refraction(RT) : 0;
 		return (recur(rtv1, RAY_ORIGIN, RAY_DIRECTION, color));
 	}
 	return (color);
 }
 
-t_color				slow_intersect(t_rtv1 *rtv1, int i)
-{
-	t_color		color;
-
-	color.red = 0;
-	color.blue = 0;
-	color.green = 0;
-	g_depth = 0;
-	color = recur(rtv1, RAY_ORIGIN, RAY_DIRECTION, color);
-	return (color);
-}
-
-
-t_color		fast_intersect(t_rtv1 *rtv1, int i)
-{
-	t_val_intersect	val;
-	t_val_math			val_t;
-	t_color				color;
-
-	val.i = -1;
-	val.num_obj = -1;
-	val_t.t0 = 2000000.0f;
-	while (++val.i < SIZE_OBJ)
-	{
-		val_t.t1 = 2000000.0f;
-		val.hit = check_intersect_object(RT, &val_t.t1, val.i, RT->ray);
-		if (val.hit != 0 && val_t.t1 < val_t.t0)
-		{
-			val_t.t0 = val_t.t1 - 1;
-			val.num_obj = val.i;
-		}
-	}
-	 if (val.num_obj != -1 && OPTION->light_off_on == 1)
-		color = ft_light(rtv1, &val_t.t0, val.num_obj);
-	else if (val.num_obj != -1 && OPTION->light_off_on == 0)
-		color = get_color(rtv1, val.num_obj);
-	else
-		set_color(&color, BACKGROUND.red, BACKGROUND.blue, BACKGROUND.green);
-	if (val.num_obj != -1)
-		RT->screen[i].id = val.num_obj;
-	return (color);
-}
-
-
-t_color 	intersect(t_rtv1 *rtv1, int i)
+t_color				intersect(t_rtv1 *rtv1, int i)
 {
 	t_color color;
 
 	if (OPTION->recursion == FALSE)
 		color = fast_intersect(RT, i);
 	else
-		color = slow_intersect(RT, i);
+	{
+		color.red = 0;
+		color.blue = 0;
+		color.green = 0;
+		g_depth = 0;
+		color = recur(rtv1, RAY_ORIGIN, RAY_DIRECTION, color);
+	}
 	color.red = MIN(color.red * 255.0f, 255.0f);
 	color.blue = MIN(color.blue * 255.0f, 255.0f);
 	color.green = MIN(color.green * 255.0f, 255.0f);

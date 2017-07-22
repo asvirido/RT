@@ -68,14 +68,18 @@ CREATE_RT =		./SRC/create_rt/create_ray.c									\
 				./SRC/create_rt/create_map.c									\
 				./SRC/create_rt/ssaa.c											\
 				./SRC/create_rt/init_obj.c										\
+				./SRC/create_rt/init_obj_2.c										\
 	 			./SRC/create_rt/ft_json_parser_obj.c							\
 	   			./SRC/create_rt/ft_json_parser_general.c						\
 	   			./SRC/create_rt/ft_pars_light.c									\
 	   			./SRC/create_rt/valid.c 										\
+	   			./SRC/create_rt/pars.c 											\
+	   			./SRC/create_rt/pars_2.c 											\
 
 
 RT =			./SRC/ray_tracing/ray_tracing.c									\
 				./SRC/ray_tracing/intersect.c									\
+				./SRC/ray_tracing/intersect_2.c									\
 				./SRC/ray_tracing/intersect_obj/intersect_sphere.c				\
 				./SRC/ray_tracing/intersect_obj/intersect_cd_disc.c				\
 				./SRC/ray_tracing/intersect_obj/intersect_cone.c				\
@@ -96,6 +100,8 @@ RT =			./SRC/ray_tracing/ray_tracing.c									\
 				./SRC/ray_tracing/light_intersect.c								\
 				./SRC/ray_tracing/all_shadow.c									\
 				./SRC/ray_tracing/all_light.c									\
+				./SRC/ray_tracing/thread.c										\
+				./SRC/ray_tracing/filters.c										\
 
 FT =			./SRC/function/main.c											\
 				./SRC/function/mlx_use.c										\
