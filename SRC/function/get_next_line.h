@@ -12,7 +12,7 @@
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# define BUFF_SIZE 19000
+# define BUFF_SIZE 200000
 # define ERROR -1
 # define END 0
 # define LINE 1

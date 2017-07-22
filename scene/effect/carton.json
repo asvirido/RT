@@ -29,7 +29,7 @@
 				"outline": false,
 				"carton": true,
 				"speed": 100,
-            "depth_rec": 222,
+            "depth_rec": 3,
             "fieldofview": 111,
             "draft_x":  1,
             "draft_y":  1,
