@@ -6,15 +6,15 @@
 #    By: asvirido <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/04 14:27:54 by asvirido          #+#    #+#              #
-#    Updated: 2017/07/13 19:38:34 by asvirido         ###   ########.fr        #
+#    Updated: 2017/07/22 20:22:09 by otkachyk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = RT
 
-FLAGS = -c #-Wall -Wextra -Werror
+FLAGS = -c -O3
 
-FLAGS2 = -c #-Wall -Wextra
+FLAGS2 = -c
 
 MLX = -lmlx -framework OpenGL -framework AppKit SRC/create_rt/CJSON/cJSON.c
 
@@ -138,13 +138,9 @@ SRC/mlx_src/%.o: SRC/mlx_src/%.c
 	@ gcc $(FLAGS2) -o  $@ $<
 SRC/event/%.o: SRC/event/%.c
 	@ gcc $(FLAGS2) -o  $@ $<
-SRC/ft_math/%.o: SRC/ft_math/%.c
-	@ gcc $(FLAGS2) -o  $@ $<
 SRC/function/%.o: SRC/function/%.c
 	@ gcc $(FLAGS2) -o  $@ $<
 SRC/ray_tracing/intersect_obj/%.o: SRC/ray_tracing/intersect_obj/%.c
-	@ gcc $(FLAGS2) -o  $@ $<
-SRC/ray_tracing/Lighting_Model/%.o: SRC/ray_tracing/Lighting_Model/%.c
 	@ gcc $(FLAGS2) -o  $@ $<
 SRC/ray_tracing/%.o: SRC/ray_tracing/%.c
 	@ gcc $(FLAGS) -o  $@ $<
